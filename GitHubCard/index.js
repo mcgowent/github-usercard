@@ -2,22 +2,31 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/mcgowent
 */
+const followersArray = [
+  'mcgowent',
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',
+];
 
 const cards = document.querySelector('.cards')
 
-axios.get('https://api.github.com/users/mcgowent')
-  .then(data => {
-    console.log('Raw', data)
-    const person = data.data
-    console.log(person)
+followersArray.forEach(e => {
+  axios.get(`https://api.github.com/users/${e}`)
+    .then(data => {
+      console.log('Raw', data)
+      const person = data.data
+      console.log(person)
 
-    cards.appendChild(cardObj(person))
-  })
-  .catch(error => {
-    // Handles failure:
-    console.log('The github API is currently down, try again later', error)
-  })
-
+      cards.appendChild(cardObj(person))
+    })
+    .catch(error => {
+      // Handles failure:
+      console.log('The github API is currently down, try again later', error)
+    })
+})
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -40,8 +49,9 @@ axios.get('https://api.github.com/users/mcgowent')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
 
+
+console.log(followersArray)
 //  Step 3: Create a function that accepts a single object as its only argument,
 //           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -74,15 +84,17 @@ function cardObj(object) {
   pic.src = object.avatar_url
   name.textContent = object.name
   username.textContent = object.login
-  location.textContent = object.location
+  location.textContent = `Location: ${object.location}`
 
-  address.href = object.url
-  address.textContent = object.url
+  profile.textContent = `Profile:`
+  address.textContent = object.html_url
+  address.href = object.html_url
 
-  followers.textContent = object.followers
-  following.textContent = object.following
 
-  bio.textContent = object.bio
+  followers.textContent = `Followers: ${object.followers}`
+  following.textContent = `Following: ${object.following}`
+
+  bio.textContent = `Bio: ${object.bio}`
 
   //Putting the HTML in the correct order
   card.appendChild(pic)
