@@ -3,7 +3,7 @@
            https://api.github.com/users/mcgowent
 */
 
-let cards = document.querySelector('.cards')
+const cards = document.querySelector('.cards')
 
 axios.get('https://api.github.com/users/mcgowent')
   .then(data => {
@@ -12,12 +12,12 @@ axios.get('https://api.github.com/users/mcgowent')
     console.log(person)
 
     cards.appendChild(cardObj(person))
-
   })
   .catch(error => {
     // Handles failure:
     console.log('The github API is currently down, try again later', error)
   })
+
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -45,10 +45,11 @@ const followersArray = [];
 //  Step 3: Create a function that accepts a single object as its only argument,
 //           Using DOM methods and properties, create a component that will return the following DOM element:
 
+
 function cardObj(object) {
   //Creating the HTML elements needed
   const card = document.createElement('div')
-  const img = document.createElement('img')
+  const pic = document.createElement('img')
   const cardInfo = document.createElement('div')
 
   const name = document.createElement('h3')
@@ -62,8 +63,29 @@ function cardObj(object) {
   const following = document.createElement('p')
   const bio = document.createElement('p')
 
+
+  //Adding the correct classes for the HTML
+  card.classList.add('card')
+  cardInfo.classList.add('card-info')
+  name.classList.add('name')
+  username.classList.add('username')
+
+
+  pic.src = object.avatar_url
+  name.textContent = object.name
+  username.textContent = object.login
+  location.textContent = object.location
+
+  address.href = object.url
+  address.textContent = object.url
+
+  followers.textContent = object.followers
+  following.textContent = object.following
+
+  bio.textContent = object.bio
+
   //Putting the HTML in the correct order
-  card.appendChild(img)
+  card.appendChild(pic)
   card.appendChild(cardInfo)
 
   cardInfo.appendChild(name)
@@ -76,25 +98,6 @@ function cardObj(object) {
   cardInfo.appendChild(followers)
   cardInfo.appendChild(following)
   cardInfo.appendChild(bio)
-
-  //Adding the correct classes for the HTML
-  card.classList.add('card')
-  cardInfo.classList.add('card-info')
-  name.classList.add('name')
-  username.classList.add('username')
-
-  img.src = object.avatar_url
-  name.textContent = object.name
-  username.textContent = object.login
-  location.textContent = object.location
-
-  a.href = object.url
-  address.textContent = object.url
-
-  followers.textContent = object.followers
-  following.textContent = object.following
-
-  bio.textContent = object.bio
   return card
 }
 
