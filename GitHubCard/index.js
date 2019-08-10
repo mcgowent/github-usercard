@@ -1,7 +1,32 @@
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
+           https://api.github.com/users/mcgowent
 */
+const followersArray = [
+  'mcgowent',
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',
+];
+
+const cards = document.querySelector('.cards')
+
+followersArray.forEach(e => {
+  axios.get(`https://api.github.com/users/${e}`)
+    .then(data => {
+      console.log('Raw', data)
+      const person = data.data
+      console.log(person)
+
+      cards.appendChild(cardObj(person))
+    })
+    .catch(error => {
+      // Handles failure:
+      console.log('The github API is currently down, try again later', error)
+    })
+})
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -11,7 +36,7 @@
 */
 
 /* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
+   create a new component and add it to the DOM as a child of .cards
 */
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
@@ -24,27 +49,86 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
 
-/* Step 3: Create a function that accepts a single object as its only argument,
-          Using DOM methods and properties, create a component that will return the following DOM element:
 
-<div class="card">
-  <img src={image url of user} />
-  <div class="card-info">
-    <h3 class="name">{users name}</h3>
-    <p class="username">{users user name}</p>
-    <p>Location: {users location}</p>
-    <p>Profile:  
-      <a href={address to users github page}>{address to users github page}</a>
-    </p>
-    <p>Followers: {users followers count}</p>
-    <p>Following: {users following count}</p>
-    <p>Bio: {users bio}</p>
-  </div>
-</div>
+console.log(followersArray)
+//  Step 3: Create a function that accepts a single object as its only argument,
+//           Using DOM methods and properties, create a component that will return the following DOM element:
 
-*/
+
+function cardObj(object) {
+  //Creating the HTML elements needed
+  const card = document.createElement('div')
+  const pic = document.createElement('img')
+  const cardInfo = document.createElement('div')
+
+  const name = document.createElement('h3')
+  const username = document.createElement('p')
+  const location = document.createElement('p')
+  const profile = document.createElement('p')
+
+  const address = document.createElement('a')
+
+  const followers = document.createElement('p')
+  const following = document.createElement('p')
+  const bio = document.createElement('p')
+
+
+  //Adding the correct classes for the HTML
+  card.classList.add('card')
+  cardInfo.classList.add('card-info')
+  name.classList.add('name')
+  username.classList.add('username')
+
+
+  pic.src = object.avatar_url
+  name.textContent = object.name
+  username.textContent = object.login
+  location.textContent = `Location: ${object.location}`
+
+  profile.textContent = `Profile:`
+  address.textContent = object.html_url
+  address.href = object.html_url
+
+
+  followers.textContent = `Followers: ${object.followers}`
+  following.textContent = `Following: ${object.following}`
+
+  bio.textContent = `Bio: ${object.bio}`
+
+  //Putting the HTML in the correct order
+  card.appendChild(pic)
+  card.appendChild(cardInfo)
+
+  cardInfo.appendChild(name)
+  cardInfo.appendChild(username)
+  cardInfo.appendChild(location)
+  cardInfo.appendChild(profile)
+
+  profile.appendChild(address)
+
+  cardInfo.appendChild(followers)
+  cardInfo.appendChild(following)
+  cardInfo.appendChild(bio)
+  return card
+}
+
+// <div class="card"> 
+//   <img src={image url of user} /> 
+//   <div class="card-info"> 
+//     <h3 class="name">{users name}</h3>
+//     <p class="username">{users user name}</p>
+//     <p>Location: {users location}</p>
+//     <p>Profile:  
+//       <a href={address to users github page}>{address to users github page}</a>
+//     </p>
+//     <p>Followers: {users followers count}</p>
+//     <p>Following: {users following count}</p>
+//     <p>Bio: {users bio}</p>
+//   </div>
+// </div>
+
+
 
 /* List of LS Instructors Github username's: 
   tetondan
